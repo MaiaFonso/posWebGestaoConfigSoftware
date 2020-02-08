@@ -1,0 +1,54 @@
+<project name="Valores" basedir="." default="main">
+
+    <property name="src.dir" value="src"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+	<property name="doc.dir" value="${build.dir}/doc"/>
+	<property name="main-class" value="Valores"/>
+	<property name="test.dir" location="test"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+    
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false"/>
+    </target>
+	
+	<!-- Run jUnit -->
+		<target name="junit" depends="compile">
+
+		  <junit printsummary="yes" haltonfailure="no">
+		
+			<classpath refid="test.path" />
+			<classpath location="${web.classes.dir}" />
+				
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${report.dir}">
+				<fileset dir="${test.dir}">
+					<include name="**/*Test*.java" />
+				</fileset>
+			</batchtest>
+				
+		  </junit>
+		</target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+    </target>
+
+    <target name="main" depends="clean, compile, run"/>
+
+</project>
