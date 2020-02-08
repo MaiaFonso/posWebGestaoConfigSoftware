@@ -8,33 +8,23 @@
 	<property name="doc.dir" value="${build.dir}/doc"/>
 	<property name="main-class" value="Valores"/>
 	<property name="test.dir" location="test"/>
-
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-    </target>
-    
-    <target name="compile">
-        <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false"/>
-    </target>
 	
-	<!-- Run jUnit -->
-		<target name="junit" depends="compile">
-
-		  <junit printsummary="yes" haltonfailure="no">
-		
-			<classpath refid="test.path" />
-			<classpath location="${web.classes.dir}" />
-				
-			<formatter type="xml" />
-			<batchtest fork="yes" todir="${report.dir}">
-				<fileset dir="${test.dir}">
-					<include name="**/*Test*.java" />
-				</fileset>
-			</batchtest>
-				
-		  </junit>
-		</target>
+	<target name="clean">
+	    <delete dir="${build.dir}"/>
+	</target>
+	
+	<path id="junit.class.path">
+		<pathelement location="lib/junit-5.5.1.jar"/>
+		<pathelement location="lib/hamcrest-core-1.3.0.jar"/>
+		<pathelement location="${build.dir}"/>
+	</path>
+	
+	<target name="compile">
+	    <mkdir dir="${classes.dir}"/>
+	    <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false">
+	    	<classpath refid="junit.class.path"/>
+	    </javac>
+	</target>
 
     <target name="jar" depends="compile">
         <mkdir dir="${jar.dir}"/>
