@@ -2,7 +2,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class ValoresTest{
+class ValoresTeste{
 	
 	@Test
 	public void testeInsereValor() {
